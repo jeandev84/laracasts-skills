@@ -22,7 +22,7 @@ $router = new \Core\Routing\Router([
 $router->path("routes/web.php");
 
 $request = \Core\Http\Requests\Request::createFromGlobals();
-$router->dispatch($request->getMethod(), $request->getPath());
+$router->dispatchRoute($request->getMethod(), $request->getPath());
 
 
 

@@ -16,7 +16,7 @@ class Route
      /**
       * @var array
      */
-     protected array $middlewaresStack = [];
+     protected array $namedMiddlewares = [];
 
 
 
@@ -99,9 +99,9 @@ class Route
      * @param array $middlewares
      * @return $this
     */
-    public function middlewareStack(array $middlewares)
+    public function namedMiddlewares(array $middlewares)
     {
-        $this->middlewaresStack = $middlewares;
+        $this->namedMiddlewares = $middlewares;
 
         return $this;
     }
@@ -134,8 +134,8 @@ class Route
     */
     public function only(string $name): static
     {
-         if (array_key_exists($name, $this->middlewaresStack)) {
-             $this->middleware($this->middlewaresStack[$name]);
+         if (array_key_exists($name, $this->namedMiddlewares)) {
+             $this->middleware($this->namedMiddlewares[$name]);
          }
 
          return $this;
@@ -152,6 +152,42 @@ class Route
 
 
 
+
+    /**
+     * @return bool
+    */
+    public function hasMiddlewares(): bool
+    {
+         return ! empty($this->middlewares);
+    }
+
+
+    
+    /**
+     * @param string $name
+     * 
+     * @return string
+    */
+    public function getMiddlewareByName(string $name): string
+    {
+         return $this->namedMiddlewares[$name] ?? $name;
+    }
+
+
+
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+    */
+    public function hasNamedMiddleware(string $name): bool
+    {
+         return array_key_exists($name, $this->namedMiddlewares);
+    }
+
+    
+    
     /**
      * @param string $middleware
      *

@@ -2,7 +2,9 @@
 namespace Middleware;
 
 
-use Middleware\Contract\MiddlewareInterface;
+
+use Core\Http\Middleware\Contract\MiddlewareInterface;
+use Core\Http\Requests\Request;
 
 /**
  * Middleware for Authenticated user
@@ -10,7 +12,7 @@ use Middleware\Contract\MiddlewareInterface;
 class Authenticated implements MiddlewareInterface
 {
 
-    public function handle()
+    public function handle(Request $request)
     {
         if (! isset($_SESSION['user'])) {
             header('location: /');

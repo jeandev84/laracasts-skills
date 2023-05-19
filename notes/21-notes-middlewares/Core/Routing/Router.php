@@ -80,7 +80,7 @@ class Router
      public function map(string $methods, string $uri, $controller): Route
      {
          $route = new Route(explode('|', $methods), $uri, $controller);
-         $route->middlewareStack($this->middlewares);
+         $route->namedMiddlewares($this->middlewares);
 
          $this->routes[] = $route;
 

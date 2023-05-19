@@ -1,5 +1,9 @@
 <?php
 
+use Middleware\Authenticated;
+use Middleware\ConfirmedEmailAddress;
+use Middleware\Guest;
+
 session_start();
 
 const BASE_PATH = __DIR__.'/../';
@@ -15,14 +19,15 @@ spl_autoload_register(function ($class) {
 require base_path('bootstrap.php');
 
 $router = new \Core\Routing\Router([
-    'auth'  => \Middleware\Authenticated::class,
-    'guest' => \Middleware\Guest::class
+    'auth'      => Authenticated::class,
+    'guest'     => Guest::class,
+    'confirmed' => ConfirmedEmailAddress::class
 ]);
 
 $router->path("routes/web.php");
 
 $request = \Core\Http\Requests\Request::createFromGlobals();
-$router->dispatch($request->getMethod(), $request->getPath());
+$router->dispatch($request);
 
 
 

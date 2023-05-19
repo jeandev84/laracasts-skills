@@ -2,8 +2,10 @@
 namespace Core\Routing;
 
 
+use Core\Http\Requests\Request;
 use Core\Http\Responses\Response;
 use Middleware\Authenticated;
+use Middleware\Contract\MiddlewareInterface;
 use Middleware\Guest;
 
 
@@ -80,7 +82,7 @@ class Router
      public function map(string $methods, string $uri, $controller): Route
      {
          $route = new Route(explode('|', $methods), $uri, $controller);
-         $route->middlewareStack($this->middlewares);
+         $route->namedMiddlewares($this->middlewares);
 
          $this->routes[] = $route;
 
@@ -194,6 +196,33 @@ class Router
      }
 
 
+     /**
+      * @param Request $request
+      * @return void
+     */
+     public function dispatch(Request $request)
+     {
+         foreach ($this->routes as $route) {
+
+             // match route
+             if ($route->match($request->getMethod(), $request->getPath())) {
+
+                 // apply the middleware
+                 if ($route->hasMiddlewares()) {
+                     foreach ($route->getMiddlewares() as $middleware) {
+                         $route->call([new $middleware, 'handle'], [$request]);
+                     }
+                 }
+
+                 // call handler
+                 return require base_path($route->getHandler());
+             }
+         }
+
+         $this->abort();
+     }
+
+
 
 
      /**
@@ -201,7 +230,7 @@ class Router
       * @param string $method
       * @return mixed|void
      */
-     public function dispatch(string $method, string $uri)
+     public function dispatchRoute(string $method, string $uri)
      {
          foreach ($this->routes as $route) {
 
@@ -209,8 +238,10 @@ class Router
              if ($route->match($method, $uri)) {
 
                  // apply the middleware
-                 foreach ($route->getMiddlewares() as $middleware) {
-                     $route->call([new $middleware, 'handle']);
+                 if ($route->hasMiddlewares()) {
+                     foreach ($route->getMiddlewares() as $middleware) {
+                         $route->call([new $middleware, 'handle']);
+                     }
                  }
 
                  // call handler

@@ -2,7 +2,9 @@
 namespace Middleware;
 
 
-use Middleware\Contract\MiddlewareInterface;
+use Core\Http\Middleware\Contract\MiddlewareInterface;
+use Core\Http\Request;
+
 
 /**
  * Middleware for Guest Only
@@ -10,7 +12,7 @@ use Middleware\Contract\MiddlewareInterface;
 class Guest implements MiddlewareInterface
 {
 
-    public function handle()
+    public function handle(Request $request)
     {
         if (isset($_SESSION['user'])) {
             header('location: /');
