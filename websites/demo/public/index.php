@@ -13,10 +13,9 @@ spl_autoload_register(function ($class) {
 require base_path('bootstrap.php');
 
 $router = new \Core\Routing\Router();
+$router->path("routes/web.php");
 
-$routes = require base_path("routes.php");
-
-$request = \Core\Http\Request::createFromGlobals();
+$request = \Core\Http\Requests\Request::createFromGlobals();
 
 $router->dispatch($request->getMethod(), $request->getPath());
 

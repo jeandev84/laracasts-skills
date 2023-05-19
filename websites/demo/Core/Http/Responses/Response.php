@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace Core\Http\Responses;
 
 
 class Response

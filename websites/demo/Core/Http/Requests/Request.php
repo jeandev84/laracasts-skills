@@ -1,5 +1,5 @@
 <?php
-namespace Core\Http;
+namespace Core\Http\Requests;
 
 use Core\Http\Bag\InputBag;
 use Core\Http\Bag\ParameterBag;

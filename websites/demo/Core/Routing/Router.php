@@ -2,6 +2,8 @@
 namespace Core\Routing;
 
 
+use Core\Response;
+
 class Router
 {
 
@@ -9,6 +11,23 @@ class Router
       * @var Route[]
      */
      protected $routes = [];
+
+
+
+     /**
+      * @param string $path
+      *
+      * @return $this
+     */
+     public function path(string $path): static
+     {
+         $router = $this;
+
+         require base_path($path);
+
+         return $this;
+     }
+
 
 
 

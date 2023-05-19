@@ -1,6 +1,7 @@
 <?php
 
-use Core\Response;
+use Core\Http\Responses\Response;
+
 
 /**
  * @param ...$args
@@ -52,7 +53,7 @@ function urlIs($value) {
 /**
  * @param int $code
  * @return void
- */
+*/
 function abort(int $code = Response::NOT_FOUND): void{
 
     http_response_code($code);
