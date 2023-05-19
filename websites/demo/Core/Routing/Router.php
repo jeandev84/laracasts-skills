@@ -2,7 +2,7 @@
 namespace Core\Routing;
 
 
-use Core\Response;
+use Core\Http\Responses\Response;
 
 class Router
 {
