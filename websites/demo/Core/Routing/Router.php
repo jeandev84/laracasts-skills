@@ -209,10 +209,8 @@ class Router
              if ($route->match($method, $uri)) {
 
                  // apply the middleware
-                 foreach ($this->middlewares as $middleware) {
-                      if ($route->hasMiddleware($middleware)) {
-                           $route->call([new $middleware, 'handle']);
-                      }
+                 foreach ($route->getMiddlewares() as $middleware) {
+                     $route->call([new $middleware, 'handle']);
                  }
 
                  // call handler
